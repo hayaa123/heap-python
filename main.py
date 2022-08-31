@@ -3,6 +3,7 @@ class Heap :
     self.size = 0
     self.capacity = 20
     self.heap_arr = [None]*self.capacity 
+    
 
   def left_child_index(self,parent_index):
     return 2*parent_index +1
@@ -50,17 +51,32 @@ class Heap :
   def heapfy_down(self):
     value_index = 0
     while self.has_left_child(value_index):
-      min_child_index = self.left_child_index(value_index)
-      if (self.has_right_child(value_index) and     
-          self.heap_arr[self.right_child_index(value_index)] < self.heap_arr[min_child_index]):
-        min_child_index = self.heap_arr[self.right_child_index(value_index)]
-      self.swap(value_index,min_child_index)
-      value_index = min_child_index
+      
+      left_child_value = self.heap_arr[self.left_child_index(value_index)]
+      right_child_value = self.heap_arr[self.right_child_index(value_index)] 
+      value =self.heap_arr[value_index]
+      min_child_index = None
+      if  left_child_value< value:        
+        min_child_index = self.left_child_index(value_index)
+        if (self.has_right_child(value_index) and     
+              right_child_value < left_child_value):
+              min_child_index = self.heap_arr[self.right_child_index(value_index)]
+
+      if min_child_index != None :
+          self.swap(value_index,min_child_index)
+          value_index = min_child_index
+      else:
+        break
+        
+      # print("min_child:",self.heap_arr[min_child_index])
+      # print("value:",self.heap_arr[value_index])
+      
+      
   def delete_root(self):
     self.heap_arr[0] = self.heap_arr[self.size-1]
-    self.heapfy_down()
     self.heap_arr[self.size-1] = None
     self.size -=1
+    self.heapfy_down()
 if __name__ == "__main__":
   heap = Heap()
   heap.insert(10)
@@ -69,6 +85,14 @@ if __name__ == "__main__":
   heap.insert(2)
   heap.insert(0)
   heap.delete_root()
+  heap.delete_root()
+  heap.delete_root()
+
+  
+  
+  
+  
+  
   
   
   print(heap.heap_arr)
